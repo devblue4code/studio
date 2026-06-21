@@ -1,0 +1,22 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-dashboard",
+      "description": "Professional administrative dashboard background",
+      "imageUrl": "https://picsum.photos/seed/nrh1/1200/400",
+      "imageHint": "administrative dashboard"
+    },
+    {
+      "id": "avatar-1",
+      "description": "Male employee avatar",
+      "imageUrl": "https://picsum.photos/seed/emp1/100/100",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "avatar-2",
+      "description": "Female employee avatar",
+      "imageUrl": "https://picsum.photos/seed/emp2/100/100",
+      "imageHint": "woman portrait"
+    }
+  ]
+}

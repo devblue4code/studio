@@ -1,0 +1,342 @@
+
+{
+  "entities": {
+    "Employee": {
+      "title": "Employee",
+      "description": "Dados cadastrais de um integrante do efetivo.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "uid": { "type": "string" },
+        "name": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "qra": { "type": "string" },
+        "matricula": { "type": "string" },
+        "validationCode": { "type": "string", "description": "Código de ativação do agente." },
+        "escala": { "type": "string" },
+        "turno": { "type": "string" },
+        "role": { "type": "string" },
+        "unit": { "type": "string" },
+        "status": { "type": "string", "enum": ["PENDENTE", "ATIVO", "FÉRIAS", "LICENÇA", "INATIVO", "ATESTADO"] },
+        "avatar": { "type": "string" },
+        "admissionDate": { "type": "string", "format": "date" },
+        "phone": { "type": "string" },
+        "emergencyContactName": { "type": "string" },
+        "emergencyPhone": { "type": "string" },
+        "address": { "type": "string" },
+        "city": { "type": "string" },
+        "state": { "type": "string" },
+        "maritalStatus": { "type": "string", "enum": ["SOLTEIRO(A)", "CASADO(A)", "UNIÃO ESTÁVEL", "DIVORCIADO(A)", "VIÚVO(A)"] },
+        "spouseName": { "type": "string" },
+        "hasChildren": { "type": "boolean" },
+        "children": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "age": { "type": "string" },
+              "cpf": { "type": "string" }
+            }
+          }
+        },
+        "voterId": { "type": "string" },
+        "voterZone": { "type": "string" },
+        "votingLocation": { "type": "string" },
+        "votingCity": { "type": "string" },
+        "birthDate": { "type": "string", "format": "date" },
+        "cpf": { "type": "string" },
+        "cnhNumber": { "type": "string" },
+        "cnhCategory": { "type": "string" },
+        "cnhExpiration": { "type": "string", "format": "date" },
+        "accessLevel": { "type": "number", "description": "Nível de acesso calculado pelo cargo." },
+        "lastMuralVisit": { "type": "string", "format": "date-time", "description": "Data/hora da última visualização do mural." },
+        "readReceipts": { 
+          "type": "object", 
+          "description": "Mapa de IDs de notificações e data/hora da primeira leitura.",
+          "additionalProperties": { "type": "object" } 
+        }
+      },
+      "required": ["name", "qra", "role", "status", "matricula", "escala", "turno", "unit"]
+    },
+    "VacationPlan": {
+      "title": "Vacation Plan",
+      "description": "Intenção de férias enviada pelo servidor com 3 opções.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "employeeId": { "type": "string" },
+        "employeeName": { "type": "string" },
+        "employeeQra": { "type": "string" },
+        "employeeEscala": { "type": "string" },
+        "employeeTurno": { "type": "string" },
+        "advance13th": { "type": "boolean", "description": "Se deseja antecipar o 13º." },
+        "splitVacation": { "type": "boolean", "description": "Se deseja dividir as férias." },
+        "splitPattern": { "type": "string", "enum": ["30", "15+15", "10+20", "20+10"], "description": "Modelo de divisão escolhido." },
+        "hasMinorChildren": { "type": "boolean", "description": "Se possui filhos menores de 18 anos em idade escolar." },
+        "spouseIsTeacher": { "type": "boolean", "description": "Se o cônjuge é professor municipal." },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "year": { "type": "string" },
+              "month": { "type": "string" },
+              "startPreference": { "type": "string", "enum": ["1", "16"], "description": "Dia sugerido de início." }
+            }
+          }
+        },
+        "status": { "type": "string", "enum": ["PENDENTE", "APROVADO", "NEGADO"] },
+        "selectedOptions": {
+          "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "year": { "type": "string" },
+              "month": { "type": "string" },
+              "startDay": { "type": "string", "description": "Dia de início homologado pela gestão." },
+              "duration": { "type": "number", "description": "Duração em dias deste período específico." }
+            }
+          }
+        },
+        "adminResponse": { "type": "string" },
+        "processedByQra": { "type": "string", "description": "QRA do gestor que processou a solicitação." },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Launch": {
+      "title": "Launch",
+      "description": "Registro de lançamento operacional (banco de horas, folgas, etc).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "launchNumber": { "type": "number", "description": "Número sequencial único do lançamento." },
+        "date": { "type": "string", "format": "date", "description": "Data do lançamento (BRT)." },
+        "employeeId": { "type": "string" },
+        "employeeName": { "type": "string" },
+        "employeeQra": { "type": "string" },
+        "escala": { "type": "string" },
+        "turno": { "type": "string" },
+        "type": { "type": "string", "description": "Tipo de lançamento vindo das configurações." },
+        "days": { "type": "number" },
+        "hours": { "type": "string", "description": "Formato HH:mm, suportando > 24h." },
+        "qtdEscala": { "type": "number", "description": "Quantidade de escalas lançadas." },
+        "startDate": { "type": "string", "format": "date" },
+        "endDate": { "type": "string", "format": "date" },
+        "observations": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["date", "employeeId", "type", "hours"]
+    },
+    "DailyReport": {
+      "title": "Daily Report",
+      "description": "Relatório operacional diário consolidado com histórico de auditoria.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "date": { "type": "string" },
+        "time": { "type": "string" },
+        "escalaId": { "type": "string" },
+        "escalaName": { "type": "string" },
+        "inspector": { "type": "object" },
+        "subinspectors": { "type": "array", "items": { "type": "object" } },
+        "absences": { "type": "array", "items": { "type": "object" } },
+        "absentTodayList": { "type": "array", "items": { "type": "object" } },
+        "specialSchedule": { "type": "array", "items": { "type": "object" } },
+        "overtime": { "type": "array", "items": { "type": "object" }, "description": "Lista de horas excedentes registradas no turno." },
+        "sectors": { "type": "array", "items": { "type": "object" } },
+        "observations": { "type": "string" },
+        "status": { "type": "string", "enum": ["PENDENTE", "EM REVISÃO", "ARQUIVADO"] },
+        "lastReturnReason": { "type": "string", "description": "Último motivo de devolução pelo RH." },
+        "auditHistory": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "timestamp": { "type": "string", "format": "date-time" },
+              "action": { "type": "string" },
+              "user": { "type": "string" },
+              "qra": { "type": "string" },
+              "notes": { "type": "string" }
+            }
+          }
+        },
+        "createdBy": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Request": {
+      "title": "Operational Request",
+      "description": "Solicitação operacional enviada por um funcionário (férias, permuta, etc).",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "employeeId": { "type": "string" },
+        "employeeName": { "type": "string" },
+        "type": { "type": "string" },
+        "date": { "type": "string" },
+        "status": { "type": "string", "enum": ["Pendente", "Aprovado pela Chefia", "Aprovado", "Negado", "Em Revisão", "Aguardando Parceiro"] },
+        "description": { "type": "string" },
+        "chefiaImediata": { "type": "string" },
+        "chefiaIds": { "type": "array", "items": { "type": "string" } },
+        "partnerId": { "type": "string" },
+        "partnerName": { "type": "string" },
+        "adminResponse": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["employeeId", "type", "status"]
+    },
+    "Notification": {
+      "title": "Notification",
+      "description": "Comunicado oficial enviado pela administração no mural de avisos.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "message": { "type": "string" },
+        "priority": { "type": "string", "enum": ["NORMAL", "ALERTA", "URGENTE"] },
+        "targetType": { "type": "string", "enum": ["TODOS", "CARGO", "INDIVIDUAL"] },
+        "targetId": { "type": "string", "description": "UID do cargo ou UID do servidor." },
+        "targetLabel": { "type": "string", "description": "Nome amigável do destino." },
+        "authorQra": { "type": "string" },
+        "authorName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["title", "message", "priority", "targetType", "authorQra"]
+    },
+    "Schedule": {
+      "title": "Schedule",
+      "description": "Definição de escalas de serviço.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "Shift": {
+      "title": "Shift",
+      "description": "Definição de turnos de trabalho.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "Role": {
+      "title": "Role",
+      "description": "Cargos e funções na unidade.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "accessLevel": { "type": "number", "description": "Nível de acesso (0-4)." }
+      },
+      "required": ["name", "accessLevel"]
+    },
+    "Unit": {
+      "title": "Unit",
+      "description": "Definição de setores ou unidades de trabalho.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "LaunchType": {
+      "title": "Launch Type",
+      "description": "Tipos de lançamento para banco de horas.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["name"]
+    },
+    "ShiftPeriod": {
+      "title": "Shift Period",
+      "description": "Configuração de horários e duração de uma escala.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "escalaId": { "type": "string" },
+        "escalaName": { "type": "string" },
+        "startTime": { "type": "string", "description": "Formato HH:mm" },
+        "endTime": { "type": "string", "description": "Formato HH:mm" },
+        "duration": { "type": "string", "description": "Tempo calculado HH:mm" }
+      },
+      "required": ["escalaId", "startTime", "endTime", "duration"]
+    },
+    "ServicePost": {
+      "title": "Service Post",
+      "description": "Definição de postos de serviço ou guarnições fixas.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" }
+      },
+      "required": ["name"]
+    }
+  },
+  "auth": {
+    "providers": ["google.com"]
+  },
+  "firestore": {
+    "/employees/{employeeId}": {
+      "schema": "#/backend/entities/Employee",
+      "description": "Coleção de funcionários da unidade."
+    },
+    "/vacationPlans/{planId}": {
+      "schema": "#/backend/entities/VacationPlan",
+      "description": "Coleção de planos de férias enviados."
+    },
+    "/launches/{launchId}": {
+      "schema": "#/backend/entities/Launch",
+      "description": "Coleção global de lançamentos operacionais."
+    },
+    "/dailyReports/{reportId}": {
+      "schema": "#/backend/entities/DailyReport",
+      "description": "Coleção de relatórios diários operacionais."
+    },
+    "/requests/{requestId}": {
+      "schema": "#/backend/entities/Request",
+      "description": "Coleção global de solicitações operacionais."
+    },
+    "/notifications/{notificationId}": {
+      "schema": "#/backend/entities/Notification",
+      "description": "Coleção de comunicados oficiais do mural."
+    },
+    "/schedules/{scheduleId}": {
+      "schema": "#/backend/entities/Schedule",
+      "description": "Coleção de escalas configuradas."
+    },
+    "/shifts/{shiftId}": {
+      "schema": "#/backend/entities/Shift",
+      "description": "Coleção de turnos configurados."
+    },
+    "/roles/{roleId}": {
+      "schema": "#/backend/entities/Role",
+      "description": "Coleção de cargos configurados."
+    },
+    "/units/{unitId}": {
+      "schema": "#/backend/entities/Unit",
+      "description": "Coleção de setores configurados."
+    },
+    "/launchTypes/{launchTypeId}": {
+      "schema": "#/backend/entities/LaunchType",
+      "description": "Coleção de tipos de lançamento configurados."
+    },
+    "/shiftPeriods/{shiftPeriodId}": {
+      "schema": "#/backend/entities/ShiftPeriod",
+      "description": "Coleção de períodos configurados para as escalas."
+    },
+    "/servicePosts/{servicePostId}": {
+      "schema": "#/backend/entities/ServicePost",
+      "description": "Coleção de postos de serviço configurados."
+    }
+  }
+}

@@ -1,0 +1,77 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 210 20% 98%;
+    --foreground: 221 40% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 221 40% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 221 40% 11%;
+    --primary: 221 79% 47%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 20% 94%;
+    --secondary-foreground: 221 79% 25%;
+    --muted: 210 20% 94%;
+    --muted-foreground: 215 16% 47%;
+    --accent: 184 70% 64%;
+    --accent-foreground: 221 79% 15%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 221 79% 47%;
+    --radius: 0.75rem;
+    --chart-1: 221 79% 47%;
+    --chart-2: 184 70% 64%;
+    --chart-3: 200 80% 30%;
+    --chart-4: 170 60% 50%;
+    --chart-5: 220 30% 60%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 221 40% 11%;
+    --sidebar-primary: 221 79% 47%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 210 20% 96%;
+    --sidebar-accent-foreground: 221 79% 47%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 221 79% 47%;
+  }
+
+  .dark {
+    --background: 222 47% 11%;
+    --foreground: 214 32% 91%;
+    --card: 222 47% 11%;
+    --card-foreground: 214 32% 91%;
+    --popover: 222 47% 11%;
+    --popover-foreground: 214 32% 91%;
+    --primary: 221 79% 47%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 217 33% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17.5%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 184 70% 64%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 33% 17.5%;
+    --input: 217 33% 17.5%;
+    --ring: 221 79% 47%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body;
+  }
+}
+
+.card-shadow {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
