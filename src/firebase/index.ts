@@ -3,10 +3,11 @@
 import { initializeApp, getApps, getApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
-import { firebaseConfig } from './config';
+
+const USE_API = process.env.NEXT_PUBLIC_USE_API === 'true';
 
 export function initializeFirebase() {
-  const firebaseApp = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+  const firebaseApp = getApps().length > 0 ? getApp() : initializeApp(USE_API ? { projectId: 'api' } : undefined);
   const firestore = getFirestore(firebaseApp);
   const auth = getAuth(firebaseApp);
 

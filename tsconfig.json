@@ -19,7 +19,10 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "firebase/app": ["./src/firebase/api/app-shim.ts"],
+      "firebase/firestore": ["./src/firebase/api/firestore-shim.ts"],
+      "firebase/auth": ["./src/firebase/api/auth-shim.ts"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

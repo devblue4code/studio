@@ -8,6 +8,7 @@ import {
   updateProfile,
   sendPasswordResetEmail
 } from 'firebase/auth';
+import { signInWithQra, registerWithQra } from '@/firebase/api/auth-shim';
 import { 
   collection, 
   query, 
@@ -72,6 +73,18 @@ export default function LoginPage() {
     const password = formData.get('password') as string;
 
     try {
+      const useApi = process.env.NEXT_PUBLIC_USE_API === 'true';
+
+      if (useApi) {
+        const result = await signInWithQra(auth, qraInput, password);
+        toast({
+          title: 'BEM-VINDO!',
+          description: `ACESSO AUTORIZADO PARA ${(result.employee as { name?: string })?.name || qraInput}.`,
+        });
+        router.push('/dashboard');
+        return;
+      }
+
       // 1. Busca o servidor pelo QRA
       const q = query(collection(firestore, 'employees'), where('qra', '==', qraInput));
       const querySnapshot = await getDocs(q);
@@ -147,6 +160,18 @@ export default function LoginPage() {
     }
 
     try {
+      const useApi = process.env.NEXT_PUBLIC_USE_API === 'true';
+
+      if (useApi) {
+        await registerWithQra(qraInput, valCode, password, undefined);
+        toast({
+          title: 'CADASTRO CONCLUÍDO!',
+          description: 'BEM-VINDO AO SISTEMA NRH.',
+        });
+        router.push('/dashboard');
+        return;
+      }
+
       // 1. Valida QRA e Código
       const q = query(
         collection(firestore, 'employees'), 

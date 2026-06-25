@@ -1,20 +1,21 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { 
-  DocumentReference, 
-  onSnapshot, 
-  DocumentSnapshot, 
-  DocumentData 
-} from 'firebase/firestore';
+import { useEffect, useState, useMemo } from 'react';
+import { onSnapshot, DocumentSnapshot, DocumentData } from 'firebase/firestore';
+import type { DocRef } from '@/firebase/api/firestore-shim';
 
-export function useDoc(docRef: DocumentReference<DocumentData> | null) {
+export function useDoc(docRef: DocRef | null) {
   const [data, setData] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
+  const docKey = useMemo(() => {
+    if (!docRef) return null;
+    return `${docRef.collection}/${docRef.id}`;
+  }, [docRef]);
+
   useEffect(() => {
-    if (!docRef) {
+    if (!docRef || !docKey) {
       setLoading(false);
       return;
     }
@@ -23,18 +24,18 @@ export function useDoc(docRef: DocumentReference<DocumentData> | null) {
     const unsubscribe = onSnapshot(
       docRef,
       (snapshot: DocumentSnapshot<DocumentData>) => {
-        setData(snapshot.exists() ? { id: snapshot.id, ...snapshot.data() } : null);
+        setData(snapshot.exists ? { id: snapshot.id, ...snapshot.data() } : null);
         setLoading(false);
       },
       (err) => {
-        console.error('Firestore Doc Error:', err);
+        console.error('Doc Error:', err);
         setError(err);
         setLoading(false);
       }
     );
 
     return () => unsubscribe();
-  }, [docRef]);
+  }, [docKey, docRef]);
 
   return { data, loading, error };
 }

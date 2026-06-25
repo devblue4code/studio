@@ -1,23 +1,26 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { 
-  Query, 
-  onSnapshot, 
-  QuerySnapshot, 
-  DocumentData,
-  query,
-  collection,
-  Firestore
-} from 'firebase/firestore';
+import { useEffect, useState, useMemo } from 'react';
+import { onSnapshot, QuerySnapshot, DocumentData } from 'firebase/firestore';
+import type { QueryRef } from '@/firebase/api/firestore-shim';
 
-export function useCollection(queryRef: Query<DocumentData> | null) {
+export function useCollection(queryRef: QueryRef | null) {
   const [data, setData] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
 
+  const queryKey = useMemo(() => {
+    if (!queryRef) return null;
+    return JSON.stringify({
+      collection: queryRef.collection,
+      where: queryRef.where,
+      orderBy: queryRef.orderBy,
+      limit: queryRef.limit,
+    });
+  }, [queryRef]);
+
   useEffect(() => {
-    if (!queryRef) {
+    if (!queryRef || !queryKey) {
       setLoading(false);
       return;
     }
@@ -34,14 +37,14 @@ export function useCollection(queryRef: Query<DocumentData> | null) {
         setLoading(false);
       },
       (err) => {
-        console.error('Firestore Collection Error:', err);
+        console.error('Collection Error:', err);
         setError(err);
         setLoading(false);
       }
     );
 
     return () => unsubscribe();
-  }, [queryRef]);
+  }, [queryKey, queryRef]);
 
   return { data, loading, error };
 }
